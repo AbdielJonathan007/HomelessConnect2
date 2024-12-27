@@ -1,0 +1,107 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect2U</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script src="{% static 'script.js'%}"></script>
+</head>
+<body>
+
+    <!-- Menu NavBar for the main page -->
+    <nav>
+        <div class="logo">
+            <!-- Logo or branding can go here -->
+            <h1>Connect2U</h1>
+        </div>
+        <div class="nav-links">
+             <!-- Hamburger icon for mobile -->
+            <button class="hamburger" onclick="toggleMenu()">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+
+            <ul class="nav-link">
+                <li><a href="#about">About</a></li>
+{#                <li><a href="#donate">Donate</a></li>#}
+{#                <li><a href="#resources">Resources</a></li>#}
+                <li><a href="#chat-section">ChatBot</a></li>
+            </ul>
+        </div>
+    </nav>
+
+        <!-- About Section -->
+    <section id="about">
+        <h3>About Connect2U</h3>
+        <p>Connect2U was born out of a deep concern for those facing homelessness in San Francisco. Having lived in the city, I have witnessed the struggles of individuals on the verge of homelessness, as well as those who are already experiencing it. Whether due to substance use, job loss, mental illness, or reintegration after prison, homelessness is a complex issue that affects a wide range of people.</p>
+
+        <h3>Our Mission</h3>
+        <p>Connect2U's mission is to provide real-time, compassionate assistance to individuals in need. The platform serves as an interactive chatbot powered by cutting-edge AI, designed to connect people with the resources and support they need to navigate the challenges of homelessness.</p>
+
+        <p>Whether someone is seeking shelter, job opportunities, healthcare, or mental health support, Connect2U offers personalized recommendations and guidance tailored to their unique situation. With the power of AI, we aim to bridge the gap between those in need and the services available to them, making it easier to access essential resources.</p>
+
+        <h3>A Tool for Everyone</h3>
+        <p>Connect2U isn’t just for individuals experiencing homelessness—it’s also a valuable resource for friends, family, and loved ones who want to support someone going through difficult times. If you know someone who is struggling with homelessness, Connect2U enables you to take action and connect them with vital services, shelters, healthcare options, and more.</p>
+
+        <p>We understand that many people are willing to help but may not know where to start. With Connect2U, you can offer immediate, actionable assistance to those who need it most, all through an easy-to-use platform. Whether you're a concerned relative or a friend, Connect2U empowers you to make a difference.</p>
+
+        <h3>Our Approach</h3>
+        <p>At Connect2U, we believe that everyone deserves dignity, respect, and access to the tools that can help them get back on their feet. By offering an AI-powered chatbot, we are making it possible for individuals to receive immediate, 24/7 assistance, and connect them with local organizations, shelters, and services in real time.</p>
+    </section>
+
+    <!-- Testing chat option -->
+   <section id="chat-section">
+    <h2>AI assistant to Provide Help</h2>
+    <div id="chat-container">
+        <div id="chat-messages" class="chat-messages">
+        <header> Chatbot</header>
+        </div>
+        <form id="chat-form">
+            <input type="text" id="query" placeholder="Type your message..." />
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</section>
+
+<script>
+    document.getElementById("chat-form").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const query = document.getElementById("query").value.trim();
+        if (!query) return;
+
+        // Display the user's message
+        const userMessage = document.createElement("div");
+        userMessage.classList.add("chat-message", "user-message");
+        userMessage.innerText = query;
+        document.getElementById("chat-messages").appendChild(userMessage);
+
+        // Fetch response from backend
+        const response = await fetch(`/chatbot/chat/?question=${encodeURIComponent(query)}`);
+        const data = await response.json();
+
+        // Display the bot's response
+        const botMessage = document.createElement("div");
+        botMessage.classList.add("chat-message", "bot-message");
+        botMessage.innerText = data.response || "Sorry, I couldn't find an answer.";
+        document.getElementById("chat-messages").appendChild(botMessage);
+
+        // Scroll to the latest message
+        document.getElementById("chat-messages").scrollTop = document.getElementById("chat-messages").scrollHeight;
+
+        // Clear input field
+        document.getElementById("query").value = "";
+    });
+</script>
+
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 Connect2U. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
